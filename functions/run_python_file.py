@@ -1,6 +1,6 @@
 import subprocess
 
-from functions.utils import get_target_path, validate_is_file,  NotARelativePathException, NotAFileException
+from functions.utils import get_target_path, validate_is_file,  NotARelativePathError, NotAFileError
 
 def run_python_file(
     working_directory: str, file_path: str, args: list[str] | None = None
@@ -15,11 +15,11 @@ def run_python_file(
         command = ["python", target_path] + args if args else ["python", target_path]
 
         return run_subprocess(command)
-    except NotARelativePathException:
+    except NotARelativePathError:
         return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
-    except NotAFileException:
+    except NotAFileError:
         return f'Error: "{file_path}" does not exist or is not a regular file'
-    except ExecutionException as e:
+    except ExecutionError as e:
         return f"Error: executing Python file: {e}"
 
 def run_subprocess(command) -> str:
@@ -36,9 +36,9 @@ def run_subprocess(command) -> str:
 
         return output
     except Exception as e:
-        raise ExecutionException(e)
+        raise ExecutionError(e)
 
-class ExecutionException(Exception):
+class ExecutionError(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 

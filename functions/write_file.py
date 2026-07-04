@@ -1,6 +1,6 @@
 import os
 
-from functions.utils import get_target_path, validate_is_file, NotARelativePathException
+from functions.utils import get_target_path, validate_is_file, NotARelativePathError
 
 def write_file(working_directory: str, file_path: str, content: str) -> str:
     try:
@@ -15,7 +15,7 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
             f.write(content)
 
             return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
-    except NotARelativePathException:
+    except NotARelativePathError:
         return f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory'
     except Exception as e:
         return str(e)

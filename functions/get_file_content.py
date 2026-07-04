@@ -1,4 +1,4 @@
-from functions.utils import NotARelativePathException, get_target_path, validate_is_file
+from functions.utils import NotARelativePathError, get_target_path, validate_is_file
 from config import MAX_CHARS
 
 
@@ -14,7 +14,7 @@ def get_file_content(working_directory: str, file_path: str) -> str:
                 file_content_string += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
 
             return file_content_string
-    except NotARelativePathException:
+    except NotARelativePathError:
         return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
     except Exception as e:
         return str(e)

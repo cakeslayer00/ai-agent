@@ -7,26 +7,26 @@ def get_target_path(working_directory: str, relative_path: str = ".") -> str:
     target_path_normalized = os.path.normpath(target_path)
 
     if os.path.commonpath([abs_work_dir, target_path_normalized]) != abs_work_dir:
-        raise NotARelativePathException("Given path is outside of the working directory")
+        raise NotARelativePathError("Given path is outside of the working directory")
 
     return target_path_normalized
 
 def validate_is_dir(directory_path: str) -> None:
     if not os.path.isdir(directory_path):
-        raise NotADirectoryException(f'Error: "{directory_path}" is not a directory')
+        raise PathNotADirectoryError(f'Error: "{directory_path}" is not a directory')
 
 def validate_is_file(file_path: str) -> None:
     if not os.path.isfile(file_path):
-        raise NotAFileException(f'Error: File not found or is not a regular file: "{file_path}"')
+        raise NotAFileError(f'Error: File not found or is not a regular file: "{file_path}"')
 
-class NotAFileException(Exception):
+class NotAFileError(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
-class NotADirectoryException(Exception):
+class PathNotADirectoryError(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
-class NotARelativePathException(Exception):
+class NotARelativePathError(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)

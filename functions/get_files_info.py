@@ -1,6 +1,6 @@
 import os
 
-from .utils import get_target_path, validate_is_dir, NotARelativePathException
+from .utils import get_target_path, validate_is_dir, NotARelativePathError
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
     res = f"Result for '{directory}' directory:\n"
@@ -16,7 +16,7 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
         )
 
         return res + list_of_files
-    except NotARelativePathException:
+    except NotARelativePathError:
         return res + f'    Error: Cannot list "{directory}" as it is outside the permitted working directory'
     except Exception as e:
         return res + str(e)
