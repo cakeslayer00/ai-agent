@@ -1,11 +1,9 @@
 import os
 import sys
 import argparse
-import json
 
 from openai import OpenAI
 from dotenv import load_dotenv
-import call_function
 from prompts import system_prompt
 from call_function import available_functions, call_function
 
@@ -51,22 +49,20 @@ def main():
             print_content(response, args)
             return
 
-    print("Model is out of memory, pls start over;)")
+    print("Reached max iterations (20) without a final answer. Try rephrasing your prompt.")
     sys.exit(1)
 
 
 def handle_function_calls(message, args):
     results = []
     for tool_call in message.tool_calls:
-        function_args = json.loads(tool_call.function.arguments or "{}")
         result_message = call_function(tool_call, args.verbose)
 
         if not result_message["content"]:
-            raise Exception("LLM failed to provide content")
+            result_message["content"] = "(no output)"
 
         if args.verbose:
             print(f"-> {result_message['content']}")
-        print(result_message['content'])
         results.append(result_message)
     return results
 

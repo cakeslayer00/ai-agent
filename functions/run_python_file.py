@@ -28,7 +28,7 @@ def run_subprocess(command) -> str:
         completed = subprocess.run(command, capture_output=True, text=True, timeout=30)
 
         if completed.returncode != 0:
-            output += "Process exited with code X\n"
+            output += f"Process exited with code {completed.returncode}\n"
         if not completed.stderr and not completed.stdout:
             output += "No output produced\n"
         output += f"STDOUT: {completed.stdout}\n"
@@ -56,7 +56,7 @@ schema_run_python_file = {
                 },
                 "args": {
                     "type": "array",
-                    "items": "string",
+                    "items": {"type": "string"},
                     "description": "List of command arguments to run with",
                 },
             },
